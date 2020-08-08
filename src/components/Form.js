@@ -2,20 +2,34 @@ import React, { Component } from 'react';
 
 class Form extends Component{
     state={
+        todo:{
         title: '',
+        done: false}
     }
 
-    change = (e)=> this.setState({title: e.target.value});
+    change = (e)=> {
+        let value=e.target.value
+        this.setState(prevState => {
+        let todo = Object.assign({}, prevState.todo);  
+        todo.title = value; 
+        todo.done= false;                               
+        return { todo };                                 
+      })}
     onSubmit=(e)=>{
         e.preventDefault();
-        this.props.addtodo(this.state.title);
-        this.setState({title:''});
+        this.props.addtodo(this.state.todo);
+        this.setState(prevState => {
+            let todo = Object.assign({}, prevState.todo);  
+            todo.title = ''; 
+            todo.done= false;                               
+            return { todo };                                 
+          })
     }
 
     render(){
     return(
         <div>
-            <input type="text" placeholder='Enter Task' onChange={this.change} value={this.state.title} style={inputstyle}></input>
+            <input type="text" placeholder='Enter Task' onChange={this.change} value={this.state.todo.title} style={inputstyle}></input>
             <input type='submit' onClick={this.onSubmit} value='Add' style={btn}></input>
         </div>
     );}
