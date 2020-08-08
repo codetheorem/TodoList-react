@@ -10,8 +10,20 @@ class App extends Component {
     count: 0
   }
 
-  addtodo=(todo)=>{
-    this.setState({ todos: [...this.state.todos,{'title':todo.title,'done':todo.done}] },()=>{this.remaining()})
+  componentDidMount(){
+    if(localStorage.getItem('todos'))
+    {this.setState({todos:JSON.parse(localStorage.getItem('todos'))},()=>{this.remaining();})
+  }
+    
+  }
+
+  addtodo= (todo)=>{
+    this.setState({ todos: [...this.state.todos,{'title':todo.title,'done':todo.done}] },()=>{this.remaining()
+    
+      const parsed = JSON.stringify(this.state.todos);
+      localStorage.setItem('todos', parsed);
+
+    })
   }
 
   changedone=(item) => {
@@ -22,6 +34,8 @@ class App extends Component {
       return todo;
     })});
     this.remaining();
+    const parsed = JSON.stringify(this.state.todos);
+    localStorage.setItem('todos', parsed);
   }
 
   remaining=()=>{
@@ -35,7 +49,12 @@ this.setState({count:value})
 }
 
   remove=(index)=>{
-    this.setState({todos: [...this.state.todos.filter((todo,i) => i !== index)]},()=>{this.remaining()})
+    this.setState({todos: [...this.state.todos.filter((todo,i) => i !== index)]},()=>{this.remaining()
+    
+      const parsed = JSON.stringify(this.state.todos);
+      localStorage.setItem('todos', parsed);
+    
+    })
   }
 
 
